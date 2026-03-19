@@ -35,8 +35,8 @@ class MockPresenter:
 
         # Para probar el flujo completo, el Mock puede "ordenar" a la vista
         # que muestre un valor ficticio [7]
-        print("MOCK: Ordenando a la vista mostrar el resultado de prueba '99.999'...")
-        self.view.salida(99.999)
+        print("MOCK: Ordenando a la vista mostrar el resultado de prueba '88.888'...")
+        self.view.salida(88.888)
 
     def al_recibir_multiplicacion(self):
         """Este método se ejecuta cuando la Vista emite la señal btnmultiplicacion"""
@@ -44,8 +44,8 @@ class MockPresenter:
 
         # Para probar el flujo completo, el Mock puede "ordenar" a la vista
         # que muestre un valor ficticio [7]
-        print("MOCK: Ordenando a la vista mostrar el resultado de prueba '99.999'...")
-        self.view.salida(99.999)
+        print("MOCK: Ordenando a la vista mostrar el resultado de prueba '77.777'...")
+        self.view.salida(77.777)
 
     def al_recibir_division(self):
         """Este método se ejecuta cuando la Vista emite la señal btndivision"""
@@ -53,8 +53,8 @@ class MockPresenter:
 
         # Para probar el flujo completo, el Mock puede "ordenar" a la vista
         # que muestre un valor ficticio [7]
-        print("MOCK: Ordenando a la vista mostrar el resultado de prueba '99.999'...")
-        self.view.salida(99.999)
+        print("MOCK: Ordenando a la vista mostrar el resultado de prueba '66.666'...")
+        self.view.salida(66.666)
 
 
 if __name__ == "__main__":
