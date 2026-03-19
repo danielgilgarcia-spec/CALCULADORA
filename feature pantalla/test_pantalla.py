@@ -16,8 +16,8 @@ class MockPresenter:
         # Nos conectamos a la señal de la vista según el contrato [6]
         self.view.btnsuma.connect(self.al_recibir_suma)
         self.view.btnresta.connect(self.al_recibir_resta)
-        self.view.btnmultiplicacion.connect(self.al_recibir_multiplicacion)
-        self.view.btndivision.connect(self.al_recibir_division)
+        self.view.btnmult.connect(self.al_recibir_multiplicacion)
+        self.view.btndiv.connect(self.al_recibir_division)
         print("MOCK: Presenter conectado a las señales de la Vista.")
 
     def al_recibir_suma(self):

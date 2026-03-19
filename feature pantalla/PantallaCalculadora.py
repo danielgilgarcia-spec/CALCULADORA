@@ -14,8 +14,8 @@ class Pantalla(QtWidgets.QMainWindow, form_class):
 
     btnsuma = Signal()
     btnresta = Signal()
-    btnmultiplicacion = Signal()
-    btndivision = Signal()
+    btnmult = Signal()
+    btndiv = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -26,8 +26,8 @@ class Pantalla(QtWidgets.QMainWindow, form_class):
         """Conecta los botones de la UI con las señales del contrato."""
         self.btsuma.clicked.connect(self.btnsuma)
         self.btresta.clicked.connect(self.btnresta)
-        self.btmulti.clicked.connect(self.btnmultiplicacion)
-        self.btdivi.clicked.connect(self.btndivision)
+        self.btmulti.clicked.connect(self.btnmult)
+        self.btdivi.clicked.connect(self.btndiv)
         self.btsalida.clicked.connect(self.close)
 
     # --- Métodos del contrato ---

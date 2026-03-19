@@ -9,8 +9,8 @@ class Presenter:
         # Suscripción a las señales de la vista
         self.vista.btnsuma.connect(self.fsuma)
         self.vista.btnresta.connect(self.fresta)
-        self.vista.btnmultiplicacion.connect(self.fmult)
-        self.vista.btndivision.connect(self.fdiv)
+        self.vista.btnmult.connect(self.fmult)
+        self.vista.btndiv.connect(self.fdiv)
 
     def fsuma(self):
         """Flujo de la operación suma."""
@@ -43,7 +43,7 @@ class Presenter:
         """Flujo de la operación división."""
         try:
             v1, v2 = self.vista.entrada()
-            resultado = self.modelo.divi(v1, v2)   
+            resultado = self.modelo.div(v1, v2)   
             self.vista.salida(resultado)
         except Exception as e:
             self.vista.mensaje('Error', str(e))
