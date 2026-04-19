@@ -1,94 +1,74 @@
+import sys
 from PySide6 import QtWidgets
-from PySide6.QtCore import Signal
-
-# Se importa la clase generada por el comando pyside6-uic
+from Event import Event
 from ui_calculadora import Ui_Calculadora as form_class
 
 
 class Pantalla(QtWidgets.QMainWindow, form_class):
-    """
-    Vista de la calculadora. Implementa el contrato MVP:
-      - Señales: btnsuma, btnresta, btnmultiplicacion, btndivision
-      - Métodos: entrada() → (float, float), salida(valor), mensaje(titulo, texto)
-    """
-
-    btnsuma = Signal()
-    btnresta = Signal()
-    btnmult = Signal()
-    btndiv = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUi(self)
-        self.setuoUI(self)
+        self.setupUi(self)  # ❌ tenías self.setupUi(self) dos veces, solo una
 
+        # Eventos patrón Observer (igual que TkView)
+        self.btnsuma = Event()
+        self.btnresta = Event()
+        self.btnmult = Event()
+        self.btndiv = Event()
 
-        self.btsuma = Event()
-        self.btresta = Event()
-        self.btmulti = Event()
-        self.btdivi = Event()
-
-        self.btsuma.add_listener(self.btnsuma)
-        self.btresta.add_listener(self.btnresta)
-        self.btmulti.add_listener(self.btnmult)
-        self.btdivi.add_listener(self.btndiv)
+        # Conectar botones de la UI a opera()
+        self.btsuma.clicked.connect(lambda: self.opera('+'))
+        self.btresta.clicked.connect(lambda: self.opera('-'))
+        self.btmulti.clicked.connect(lambda: self.opera('*'))
+        self.btdivi.clicked.connect(lambda: self.opera('/'))
         self.btsalida.clicked.connect(self.close)
 
-    # --- Métodos del contrato ---
-
     def entrada(self):
-        """
-        Lee y devuelve los dos valores introducidos por el usuario.
-
-        Returns
-        -------
-        tuple[float, float]
-
-        Raises
-        ------
-        ValueError
-            Si alguno de los campos no contiene un número válido.
-        """
         try:
-            v1 = float(self.entrada1.text())
-            v2 = float(self.entrada2.text())
-            return v1, v2
+            return float(self.entrada1.text()), float(self.entrada2.text())
         except ValueError:
             raise ValueError("Introduce números válidos en ambos campos.")
 
     def salida(self, valor):
-        """
-        Muestra el resultado en la etiqueta de resultado.
-
-        Parameters
-        ----------
-        valor : int | float
-        """
-        self.resultado.setText(str(valor))
+        self.resultado.setText(f"{valor:.3f}")
 
     def mensaje(self, titulo, texto):
-        """
-        Muestra un cuadro de diálogo de error.
-
-        Parameters
-        ----------
-        titulo : str
-        texto  : str
-        """
         QtWidgets.QMessageBox.critical(self, titulo, texto)
 
-    def opera(self):
-        # Método que se llamará al hacer clic en el botón de operar
-        pass
+    def opera(self, op):
+        if not self.verifica():
+            return
+        if op == '+':
+            self.btnsuma.emit()
+        if op == '-':
+            self.btnresta.emit()
+        if op == '*':
+            self.btnmult.emit()
+        if op == '/':
+            self.btndiv.emit()
 
     def verifica(self):
-        # Método que se llamará al hacer clic en el botón de verificar
-        pass
+        val1 = self.entrada1.text()
+        val2 = self.entrada2.text()
+        if not val1 or not val2:
+            self.mensaje('Error', 'Ambos campos deben ser llenados.')
+            return False
+        try:
+            float(val1)
+            float(val2)
+        except ValueError:
+            self.mensaje('Error', 'Ambos campos deben ser numéricos.')
+            return False
+        return True
+
 
 if __name__ == "__main__":
-    import sys
+    from presenter import Presenter
+    from Calculadora import Calculadora as Model
 
     app = QtWidgets.QApplication(sys.argv)
-    pantalla = Pantalla()
-    pantalla.show()
+    modelo = Model()
+    vista = Pantalla()
+    presentador = Presenter(vista, modelo)
+    vista.show()
     sys.exit(app.exec())
